@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SHAN-YI, SHIH — Graduate Institute of Biochemistry" />
+  <title>SHAN-YI, SHIH — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root { --ink:#33465e; --paper:#f5f7fb; --line:#d6dce8; --blue:#607d9a; --muted:#687183; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:var(--paper); font-family:Manrope,Arial,sans-serif; }
+    a { color:inherit; text-decoration:none; }
+    .topbar { height:66px; padding:0 clamp(22px,5vw,72px); display:flex; justify-content:space-between; align-items:center; background:var(--ink); color:white; }
+    .brand, .index, .eyebrow, .week-no { font:500 11px/1.2 "DM Mono",monospace; letter-spacing:.09em; text-transform:uppercase; }
+    .brand { font-size:12px; letter-spacing:.12em; display:flex; align-items:center; gap:13px; }
+    .course-name { color:#c7d2df; font:400 9px/1.25 "DM Mono",monospace; letter-spacing:.045em; text-transform:none; border-left:1px solid #91a5b9; padding-left:13px; max-width:360px; }
+    .topbar a { color:#aeb7c7; } .topbar a:hover { color:white; }
+    .hero { min-height:620px; display:grid; grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr); background:white; }
+    .hero-copy { position:relative; overflow:hidden; padding:clamp(48px,9vw,136px) clamp(24px,7vw,105px) 54px; display:flex; flex-direction:column; justify-content:space-between; }
+    .hero-copy > * { position:relative; z-index:1; }
+    .molecule { position:absolute; width:min(39vw,465px); height:auto; right:-115px; top:38px; color:#607d9a; opacity:.13; pointer-events:none; }
+    .eyebrow { color:var(--blue); }
+    h1 { margin:30px 0 12px; font-size:clamp(3.3rem,7vw,7.3rem); line-height:.88; letter-spacing:-.085em; font-weight:800; max-width:760px; }
+    .chinese { display:block; font-size:.45em; letter-spacing:-.035em; line-height:1; margin-top:18px; }
+    .department { max-width:340px; margin:0; color:var(--muted); font-size:15px; line-height:1.55; }
+    .hero-footer { display:flex; gap:18px; align-items:center; margin-top:64px; }
+    .scroll { border:1px solid var(--ink); border-radius:100%; height:44px; width:44px; display:grid; place-items:center; font-size:21px; transition:.2s; } .scroll:hover { background:var(--blue); border-color:var(--blue); color:white; transform:translateY(2px); }
+    .hero-image { position:relative; overflow:hidden; min-height:480px; background:#dfe7e5; }
+    .hero-image img { height:100%; width:100%; display:block; object-fit:cover; object-position:52% 40%; filter:saturate(.85) contrast(1.04); }
+    .image-note { position:absolute; bottom:0; left:0; padding:16px 20px; background:var(--blue); color:white; font:500 10px/1.2 "DM Mono",monospace; letter-spacing:.08em; }
+    .work { position:relative; overflow:hidden; padding:clamp(62px,9vw,130px) clamp(22px,7vw,105px); background:var(--ink); color:white; }
+    .work > * { position:relative; z-index:1; }
+    .helix { position:absolute; right:3.5vw; bottom:-12px; height:500px; width:140px; color:#dbe7f0; opacity:.14; pointer-events:none; }
+    .work-heading { display:flex; align-items:end; justify-content:space-between; gap:30px; padding-bottom:34px; border-bottom:1px solid #2b303a; }
+    h2 { margin:10px 0 0; font-size:clamp(2rem,4.4vw,4.6rem); line-height:.95; letter-spacing:-.065em; }
+    .work-intro { color:#aeb7c7; max-width:290px; margin:0; font-size:14px; line-height:1.55; }
+    .week-grid { display:grid; grid-template-columns:repeat(4,1fr); }
+    .week { min-height:190px; padding:24px 4px 18px; border-right:1px solid #2b303a; border-bottom:1px solid #2b303a; display:flex; flex-direction:column; justify-content:space-between; transition:background .25s,color .25s,padding .25s; }
+    .week:nth-child(4n) { border-right:0; }
+    .week:hover, .week:focus { outline:none; background:var(--blue); padding-left:18px; padding-right:18px; }
+    .week-no { color:#8f9aac; } .week:hover .week-no { color:white; }
+    .week-title { font-size:clamp(1.15rem,1.8vw,1.65rem); font-weight:600; letter-spacing:-.045em; }
+    .week-arrow { font-size:22px; text-align:right; }
+    .assignment-preview { display:grid; grid-template-columns:150px 1fr; gap:22px; padding:28px 0 0; min-height:112px; }
+    .preview-label { color:#8f9aac; font:500 10px/1.35 "DM Mono",monospace; letter-spacing:.08em; text-transform:uppercase; }
+    .preview-copy { margin:0; font-size:18px; line-height:1.45; letter-spacing:-.03em; }
+    .footer { padding:20px clamp(22px,7vw,105px); display:flex; justify-content:space-between; gap:12px; font:400 10px/1.3 "DM Mono",monospace; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; }
+    @media (max-width:720px) { .topbar{height:auto;min-height:56px;padding-top:11px;padding-bottom:11px}.brand{gap:8px}.course-name{max-width:175px;font-size:8px;padding-left:8px}.hero{grid-template-columns:1fr}.hero-copy{min-height:480px}.hero-image{min-height:490px}.work-heading{display:block}.work-intro{margin-top:24px}.week-grid{grid-template-columns:repeat(2,1fr)}.week:nth-child(4n){border-right:1px solid #2b303a}.week:nth-child(2n){border-right:0}.assignment-preview{grid-template-columns:1fr;gap:8px}.footer{font-size:9px} }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top"><span>S.Y.S / 2026</span><span class="course-name">Applications of bioinformatics in multi-omics</span></a>
+    <a class="index" href="#homework">Weekly Homework ↗</a>
+  </header>
+  <main id="top">
+    <section class="hero" aria-labelledby="name">
+      <div class="hero-copy">
+        <svg class="molecule" viewBox="0 0 480 355" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M57 215 151 160 250 216 346 160 431 212M151 160 150 57 252 8 346 61 346 160M250 216 252 315 354 347" />
+          <circle cx="57" cy="215" r="12" fill="currentColor"/><circle cx="151" cy="160" r="20" fill="currentColor"/><circle cx="250" cy="216" r="13" fill="currentColor"/><circle cx="346" cy="160" r="25" fill="currentColor"/><circle cx="431" cy="212" r="9" fill="currentColor"/><circle cx="150" cy="57" r="10" fill="currentColor"/><circle cx="252" cy="8" r="16" fill="currentColor"/><circle cx="346" cy="61" r="11" fill="currentColor"/><circle cx="252" cy="315" r="10" fill="currentColor"/><circle cx="354" cy="347" r="15" fill="currentColor"/>
+        </svg>
+        <div>
+          <p class="eyebrow">Personal introduction / 01</p>
+          <h1 id="name">SHAN-YI,<br>SHIH <span class="chinese">施姍邑</span></h1>
+          <p class="department">Graduate Institute<br>of Biochemistry</p>
+        </div>
+        <div class="hero-footer"><span class="index">Scroll to explore</span><a class="scroll" href="#homework" aria-label="View weekly homework">↓</a></div>
+      </div>
+      <div class="hero-image"><img src="profile.jpg" alt="Portrait of Shan-Yi Shih in graduation attire" /><span class="image-note">01 / Portrait</span></div>
+    </section>
+    <section class="work" id="homework" aria-labelledby="work-title">
+      <svg class="helix" viewBox="0 0 140 500" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M24 0C126 60 126 110 24 166S-78 276 24 333s102 108 0 167M116 0C14 60 14 110 116 166s102 110 0 167S14 441 116 500" />
+        <path d="M29 30h82M52 90h36M73 146H29M29 198h82M52 257h36M73 313H29M29 365h82M52 425h36M73 480H29" />
+        <circle cx="24" cy="0" r="5" fill="currentColor"/><circle cx="116" cy="0" r="5" fill="currentColor"/><circle cx="24" cy="333" r="5" fill="currentColor"/><circle cx="116" cy="333" r="5" fill="currentColor"/>
+      </svg>
+      <div class="work-heading"><div><p class="eyebrow">Course archive / 02</p><h2 id="work-title">Weekly<br>Homework.</h2></div><p class="work-intro">A selected record of weekly explorations, assignments and learning outcomes.</p></div>
+      <nav class="week-grid" aria-label="Weekly homework menu">
+        <a class="week" href="#assignment" data-week="01"><span class="week-no">Week 01</span><span class="week-title">Homework 01</span><span class="week-arrow">↗</span></a>
+        <a class="week" href="#assignment" data-week="02"><span class="week-no">Week 02</span><span class="week-title">Homework 02</span><span class="week-arrow">↗</span></a>
+        <a class="week" href="#assignment" data-week="03"><span class="week-no">Week 03</span><span class="week-title">Homework 03</span><span class="week-arrow">↗</span></a>
+        <a class="week" href="#assignment" data-week="04"><span class="week-no">Week 04</span><span class="week-title">Homework 04</span><span class="week-arrow">↗</span></a>
+        <a class="week" href="#assignment" data-week="05"><span class="week-no">Week 05</span><span class="week-title">Homework 05</span><span class="week-arrow">↗</span></a>
+        <a class="week" href="#assignment" data-week="06"><span class="week-no">Week 06</span><span class="week-title">Homework 06</span><span class="week-arrow">↗</span></a>
+        <a class="week" href="#assignment" data-week="07"><span class="week-no">Week 07</span><span class="week-title">Homework 07</span><span class="week-arrow">↗</span></a>
+        <a class="week" href="#assignment" data-week="08"><span class="week-no">Week 08</span><span class="week-title">Homework 08</span><span class="week-arrow">↗</span></a>
+      </nav>
+      <div class="assignment-preview" id="assignment" aria-live="polite"><span class="preview-label" id="preview-label">Selected / Week 01</span><p class="preview-copy" id="preview-copy">Select a week to display its homework overview. You can replace this text with your assignment content or a project link later.</p></div>
+    </section>
+  </main>
+  <footer class="footer"><span>SHAN-YI, SHIH / 施姍邑</span><span>Graduate Institute of Biochemistry</span></footer>
+  <script>
+    const label = document.getElementById('preview-label');
+    const copy = document.getElementById('preview-copy');
+    document.querySelectorAll('.week').forEach((item) => item.addEventListener('click', () => {
+      const week = item.dataset.week;
+      label.textContent = `Selected / Week ${week}`;
+      copy.textContent = `Week ${week} homework — add your assignment description, research notes, images, files, or external project link here.`;
+    }));
+  </script>
+</body>
+</html>
