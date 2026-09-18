@@ -48,6 +48,8 @@
     .assignment-preview { display:grid; grid-template-columns:150px 1fr; gap:22px; padding:28px 0 0; min-height:112px; }
     .preview-label { color:#8f9aac; font:500 10px/1.35 "DM Mono",monospace; letter-spacing:.08em; text-transform:uppercase; }
     .preview-copy { margin:0; font-size:18px; line-height:1.45; letter-spacing:-.03em; }
+    .preview-media { margin-top:18px; max-width:220px; max-height:150px; object-fit:cover; border-radius:2px; display:none; }
+    .preview-link { display:none; margin-top:12px; font:500 11px/1.3 "DM Mono",monospace; letter-spacing:.08em; text-transform:uppercase; color:#c7d2df; text-decoration:underline; }
     .footer { padding:20px clamp(22px,7vw,105px); display:flex; justify-content:space-between; gap:12px; font:400 10px/1.3 "DM Mono",monospace; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; }
     @media (max-width:720px) { .topbar{height:auto;min-height:56px;padding-top:11px;padding-bottom:11px}.brand{gap:8px}.course-name{max-width:175px;font-size:8px;padding-left:8px}.hero{grid-template-columns:1fr}.hero-copy{min-height:480px}.hero-image{min-height:490px}.work-heading{display:block}.work-intro{margin-top:24px}.week-grid{grid-template-columns:repeat(2,1fr)}.week:nth-child(4n){border-right:1px solid #2b303a}.week:nth-child(2n){border-right:0}.assignment-preview{grid-template-columns:1fr;gap:8px}.footer{font-size:9px} }
   </style>
@@ -80,28 +82,102 @@
         <circle cx="24" cy="0" r="5" fill="currentColor"/><circle cx="116" cy="0" r="5" fill="currentColor"/><circle cx="24" cy="333" r="5" fill="currentColor"/><circle cx="116" cy="333" r="5" fill="currentColor"/>
       </svg>
       <div class="work-heading"><div><p class="eyebrow">Course archive / 02</p><h2 id="work-title">Weekly<br>Homework.</h2></div><p class="work-intro">A selected record of weekly explorations, assignments and learning outcomes.</p></div>
-      <nav class="week-grid" aria-label="Weekly homework menu">
-        <a class="week" href="#assignment" data-week="01"><span class="week-no">Week 01</span><span class="week-title">Homework 01</span><span class="week-arrow">↗</span></a>
-        <a class="week" href="#assignment" data-week="02"><span class="week-no">Week 02</span><span class="week-title">Homework 02</span><span class="week-arrow">↗</span></a>
-        <a class="week" href="#assignment" data-week="03"><span class="week-no">Week 03</span><span class="week-title">Homework 03</span><span class="week-arrow">↗</span></a>
-        <a class="week" href="#assignment" data-week="04"><span class="week-no">Week 04</span><span class="week-title">Homework 04</span><span class="week-arrow">↗</span></a>
-        <a class="week" href="#assignment" data-week="05"><span class="week-no">Week 05</span><span class="week-title">Homework 05</span><span class="week-arrow">↗</span></a>
-        <a class="week" href="#assignment" data-week="06"><span class="week-no">Week 06</span><span class="week-title">Homework 06</span><span class="week-arrow">↗</span></a>
-        <a class="week" href="#assignment" data-week="07"><span class="week-no">Week 07</span><span class="week-title">Homework 07</span><span class="week-arrow">↗</span></a>
-        <a class="week" href="#assignment" data-week="08"><span class="week-no">Week 08</span><span class="week-title">Homework 08</span><span class="week-arrow">↗</span></a>
-      </nav>
+      <nav class="week-grid" id="week-grid" aria-label="Weekly homework menu"></nav>
       <div class="assignment-preview" id="assignment" aria-live="polite"><span class="preview-label" id="preview-label">Selected / Week 01</span><p class="preview-copy" id="preview-copy">Select a week to display its homework overview. You can replace this text with your assignment content or a project link later.</p></div>
     </section>
   </main>
   <footer class="footer"><span>SHAN-YI, SHIH / 施姍邑</span><span>Graduate Institute of Biochemistry</span></footer>
   <script>
+    const grid = document.getElementById('week-grid');
     const label = document.getElementById('preview-label');
     const copy = document.getElementById('preview-copy');
-    document.querySelectorAll('.week').forEach((item) => item.addEventListener('click', () => {
-      const week = item.dataset.week;
-      label.textContent = `Selected / Week ${week}`;
-      copy.textContent = `Week ${week} homework — add your assignment description, research notes, images, files, or external project link here.`;
-    }));
+    const preview = document.getElementById('assignment');
+    
+    const media = document.createElement('img');
+    media.className = 'preview-media';
+    media.alt = '';
+    preview.appendChild(media);
+
+    const link = document.createElement('a');
+    link.className = 'preview-link';
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.textContent = 'Open assignment ↗';
+    preview.appendChild(link);
+
+    function parseFrontMatter(text) {
+      const match = text.match(/^---\\s*\\n([\\s\\S]*?)\\n---/);
+      if (!match) return {};
+      const data = {};
+      match[1].split('\\n').forEach((line) => {
+        const colon = line.indexOf(':');
+        if (colon === -1) return;
+        const key = line.slice(0, colon).trim();
+        let value = line.slice(colon + 1).trim();
+        value = value.replace(/^["']|["']$/g, '');
+        data[key] = value;
+      });
+      return data;
+    }
+
+    function renderPreview(item) {
+      label.textContent = `Selected / Week ${String(item.week).padStart(2, '0')}`;
+      copy.textContent = item.description || 'No homework description has been added yet.';
+      
+      if (item.image) {
+        media.src = item.image.startsWith('http') ? item.image : item.image;
+        media.style.display = 'block';
+      } else {
+        media.removeAttribute('src');
+        media.style.display = 'none';
+      }
+
+      if (item.link) {
+        link.href = item.link;
+        link.style.display = 'inline-block';
+      } else {
+        link.removeAttribute('href');
+        link.style.display = 'none';
+      }
+    }
+
+    function makeCard(item) {
+      const card = document.createElement('a');
+      card.className = 'week';
+      card.href = '#assignment';
+      card.innerHTML = `
+        <span class="week-no">Week ${String(item.week).padStart(2, '0')}</span>
+        <span class="week-title">${item.title || `Homework ${String(item.week).padStart(2, '0')}`}</span>
+        <span class="week-arrow">↗</span>
+      `;
+      card.addEventListener('click', () => renderPreview(item));
+      return card;
+    }
+
+    async function loadHomework() {
+      try {
+        const api = 'https://api.github.com/repos/shanyi31431-hash/Applications-of-bioinformatics-in-multi-omics/contents/content/homework?ref=main';
+        const response = await fetch(api, { headers: { Accept: 'application/vnd.github+json' } });
+        if (!response.ok) throw new Error('Unable to load homework list.');
+        const files = await response.json();
+        const markdownFiles = files.filter((file) => file.type === 'file' && file.name.endsWith('.md'));
+        const entries = await Promise.all(markdownFiles.map(async (file) => {
+          const r = await fetch(file.download_url);
+          const text = await r.text();
+          return parseFrontMatter(text);
+        }));
+        entries
+          .filter((item) => item.week)
+          .sort((a, b) => Number(a.week) - Number(b.week))
+          .forEach((item) => grid.appendChild(makeCard(item)));
+
+        if (entries.length) renderPreview(entries.sort((a, b) => Number(a.week) - Number(b.week))[0]);
+      } catch (error) {
+        grid.innerHTML = '<p style="grid-column:1/-1;color:#aeb7c7;padding:24px 4px;">Homework content is temporarily unavailable. Please try again later.</p>';
+      }
+    }
+
+    loadHomework();
   </script>
 </body>
 </html>
