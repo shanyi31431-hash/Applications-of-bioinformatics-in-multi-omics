@@ -1,0 +1,36 @@
+backend:
+  name: github
+  repo: shanyi31431-hash/Applications-of-bioinformatics-in-multi-omics
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "homework"
+    label: "Weekly Homework"
+    folder: "content/homework"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - label: "Week"
+        name: "week"
+        widget: "string"
+
+      - label: "Title"
+        name: "title"
+        widget: "string"
+
+      - label: "Description"
+        name: "description"
+        widget: "text"
+
+      - label: "Link"
+        name: "link"
+        widget: "string"
+        required: false
+
+      - label: "Image"
+        name: "image"
+        widget: "image"
+        required: false
